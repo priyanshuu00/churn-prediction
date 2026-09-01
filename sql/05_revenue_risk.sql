@@ -1,7 +1,7 @@
 -- ====================================================================
 -- 05_revenue_risk.sql
 -- Purpose: Financial impact analysis of churn (Historical).
--- Note: "Predicted Revenue at Risk" is excluded as it requires 
+-- Note: "Monthly Revenue Exposure from High-Risk Customers" is excluded as it requires 
 --       the ML model probabilities. We only calculate historical loss.
 -- Database: MySQL
 -- ====================================================================

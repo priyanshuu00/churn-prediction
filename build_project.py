@@ -63,7 +63,7 @@ def run():
                             
     active_df.to_csv('data/processed/customer_risk_scores.csv', index=False)
     
-    # Calculate Predicted Revenue at Risk
+    # Calculate Monthly Revenue Exposure from High-Risk Customers
     high_risk_mask = active_df['RiskTier'].isin(['High', 'Critical'])
     predicted_rev_risk = active_df[high_risk_mask]['MonthlyCharges'].sum()
     high_risk_count = high_risk_mask.sum()
@@ -134,7 +134,7 @@ def run():
 - Churn Rate: {churn_rate:.2%}
 - Historical Revenue Lost: ${hist_revenue_lost:,.2f}
 - High-Risk Customer Count (Active): {high_risk_count}
-- Predicted Revenue at Risk: ${predicted_rev_risk:,.2f}
+- Monthly Revenue Exposure from High-Risk Customers: ${predicted_rev_risk:,.2f}
 
 ## Model Evaluation
 - Model: Logistic Regression (balanced class weight)
@@ -150,7 +150,7 @@ def run():
         f.write(results)
         
     # 5. Generate Jupyter Notebooks templates
-    setup = "import os, sys\nos.chdir('..')\nsys.path.append('..')\n"
+    setup = "import os, sys\nif os.path.basename(os.getcwd()) == 'notebooks':\n    os.chdir('..')\nsys.path.append(os.getcwd())\n"
     create_notebook("notebooks/01_data_quality.ipynb", "Data Quality & Cleaning", "Analyze missing values, whitespace in TotalCharges, and basic types.", setup + "import pandas as pd\nfrom src.data.preprocessing import load_and_clean_data\ndf = load_and_clean_data('data/raw/RAW DATA.xlsx')\ndisplay(df.head())")
     create_notebook("notebooks/02_eda.ipynb", "Exploratory Data Analysis", "Analyze churn by contract, tenure, and services.", setup + "import pandas as pd\nimport matplotlib.pyplot as plt\nfrom src.analytics.churn_analysis import get_overall_churn_rate, analyze_churn_by_dimension\ndf = pd.read_csv('data/processed/cleaned_customer_data.csv')\nprint(get_overall_churn_rate(df))\n\n# Churn by Contract Chart\ncontract_churn = analyze_churn_by_dimension(df, 'Contract')\ndisplay(contract_churn)\ncontract_churn.set_index('Contract')['churn_rate'].plot(kind='bar', color='skyblue', title='Churn Rate by Contract')\nplt.ylabel('Churn Rate')\nplt.show()")
     create_notebook("notebooks/03_customer_segmentation.ipynb", "Customer Segmentation", "Value segments and High Friction analysis.", setup + "import pandas as pd\nfrom src.analytics.segmentation import create_customer_segments, analyze_segment_risk\ndf = pd.read_csv('data/processed/cleaned_customer_data.csv')\ndf_seg = create_customer_segments(df)\ndisplay(analyze_segment_risk(df_seg, 'High_Friction'))")

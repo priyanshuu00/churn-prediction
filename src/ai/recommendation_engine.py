@@ -1,6 +1,9 @@
 import os
 import json
 from src.ai.prompts import SYSTEM_PROMPT, build_customer_prompt
+from dotenv import load_dotenv
+
+load_dotenv()
 
 try:
     from google import genai
@@ -43,7 +46,7 @@ class RetentionAgent:
                     if parsed.get("recommended_action") in valid_actions:
                         return parsed
             except Exception as e:
-                print(f"Gemini API Error: {e}")
+                print("Gemini API request failed. Using fallback recommendation.")
         
         # Fallback Logic (if API fails, no key provided, or invalid hallucination)
         return self._fallback_recommendation(customer_data)

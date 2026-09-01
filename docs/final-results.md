@@ -5,7 +5,7 @@
 - Churn Rate: 26.54%
 - Historical Revenue Lost: $139,130.85
 - High-Risk Customer Count (Active): 1330
-- Predicted Revenue at Risk: $83,429.70
+- Monthly Revenue Exposure from High-Risk Customers: $83,429.70
 
 ## Model Evaluation
 - Model: Logistic Regression (balanced class weight)
